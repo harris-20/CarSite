@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from .models import CarType, Vehicle, Buyer,OrderVehicle, GroupMember
 from django.shortcuts import get_object_or_404
 from django.views import View
+from .forms import ContactForm,OrderVehicleForm
 # Create your views here.
 '''''
 def homepage(request):
@@ -31,6 +32,15 @@ def about(request):
 
 #def contact_us(request):
  #   return HttpResponse('Contact us at at 2269752336')
+
+def vehicles(req):
+    form =OrderVehicleForm()
+    vehicles_all=Vehicle.objects.all()
+    return render(req,'carapp/vehicles.html',{'form': form,'vehicles_all':vehicles_all})
+
+def contacts(req):
+    form =ContactForm()
+    return render(req,'carapp/contact.html',{'form': form})
 
 def cardetail(request,cartype_no):
     #cartype=CarType.objects.get(id=cartype_no)
@@ -59,3 +69,8 @@ def groupdetail(request):
               "</p>")
         response.write(para)
     return response
+
+def orderhere(request):
+    res=HttpResponse()
+    res.write("You can place your order here.")
+    return res

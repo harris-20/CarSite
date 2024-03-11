@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'carapp/base.html' %}
 
-</body>
-</html>
+{% block body_block %}
+
+
+<p> Following are the Vehicles in {{cartype_name}} with Cartype No {{cartype_no }}:</p>
+{% if cars %}
+<h2> Type of Cars </h2>
+<ul>
+	{% for car in cars %}
+<li> {{ car.car_name}} </li>
+{% endfor %}
+</ul>
+{% else %}
+<strong> None of the car types is available! </strong>
+{% endif %}
+{% endblock %}
