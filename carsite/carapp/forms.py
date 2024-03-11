@@ -15,3 +15,6 @@ class ContactForm(forms.Form):
     subject=forms.CharField(max_length=30)
     reason= forms.CharField(widget=forms.Textarea)
     message=forms.CharField(widget=forms.Textarea)
+
+class VehicleSearchForm(forms.Form):
+    id = forms.IntegerField()

@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from .models import CarType, Vehicle, Buyer,OrderVehicle, GroupMember
 from django.shortcuts import get_object_or_404
 from django.views import View
-from .forms import ContactForm,OrderVehicleForm
+from .forms import ContactForm,OrderVehicleForm, VehicleSearchForm
 # Create your views here.
 '''''
 def homepage(request):
@@ -74,3 +74,36 @@ def orderhere(request):
     res=HttpResponse()
     res.write("You can place your order here.")
     return res
+
+def search(request):
+    form = VehicleSearchForm(request.GET)
+    vehicles = Vehicle.objects.all()
+
+    if form.is_bound and form.is_valid:  # Checking if form is valid
+        if 'id' in form.data:
+            id = form.data['id']
+            vehicle = get_object_or_404(Vehicle, pk=id)  # Retrieving vehicle by primary key
+            return render(request, "carapp/search_vehicle.html", {'found': vehicle, 'vehicles': vehicles})
+
+    return render(request, "carapp/search_vehicle.html", {'vehicles': vehicles})
+
+def orderhere(request):
+    msg = ''
+    vehiclelist = Vehicle.objects.all()
+    if request.method == 'POST':
+        form = OrderVehicleForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            # if order.vehicle.orders <= order.vehicle.instock:
+           # if order.vehicle.orders.count() <= order.vehicle.inventory:
+            if order.quantity <= order.vehicle.inventory:
+                order.vehicle.inventory -= 1
+                order.vehicle.save()
+                order.save()
+                msg = 'Your vehicle has been ordered'
+            else:
+                msg = 'We do not have sufficient stock to fill your order.'
+                return render(request, 'carapp/nosuccess_order.html', {'msg': msg})
+    else:
+        form = OrderVehicleForm()
+    return render(request, 'carapp/orderhere.html', {'form': form, 'msg': msg, 'vehiclelist': vehiclelist})

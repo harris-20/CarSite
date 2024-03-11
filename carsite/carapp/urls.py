@@ -11,4 +11,6 @@ urlpatterns = [
     path('carapp/vehicles', views.vehicles,name='vehicles'),
     path('carapp/order', views.orderhere, name='order'),
     path('groupdetail/',views.groupdetail, name='groupdetails'),
+
+    path('carapp/search', views.search, name='search')
 ]
