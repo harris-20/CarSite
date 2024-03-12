@@ -2,16 +2,9 @@
 
 {%  block body_block %}
    <h1>All Vehicles</h1>
-  {% if vehicles|length > 1 %}
-    <ul>
-
-    {% for vehicle in vehicles  %}
-    <li>  {{ vehicle.car_name }}  </li>
+    {% for vehicle in vehicles_all %}
+        <li>{{ vehicle }}</li>
     {% endfor %}
-    </ul>
-  {% else %}
-      <p> There are no vehicles</p>
-   {% endif %}
 
      <a href="{% url 'carapp:order' %}" > Order </a>
 {% endblock %}

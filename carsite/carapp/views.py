@@ -6,6 +6,13 @@ from .models import CarType, Vehicle, Buyer,OrderVehicle, GroupMember
 from django.shortcuts import get_object_or_404
 from django.views import View
 from .forms import ContactForm,OrderVehicleForm, VehicleSearchForm
+
+from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
+from django.views.generic.edit import FormView
+from django.views.generic.edit import CreateView
+from django.views.generic.edit import DeleteView
+from django.views.generic.edit import FormView
 # Create your views here.
 '''''
 def homepage(request):
@@ -96,8 +103,11 @@ def orderhere(request):
             order = form.save(commit=False)
             # if order.vehicle.orders <= order.vehicle.instock:
            # if order.vehicle.orders.count() <= order.vehicle.inventory:
+            #if order.quantity <= order.vehicle.inventory:
+            #if order.vehicle.orders.count() <= order.vehicle.inventory:
+                #order.vehicle.inventory -= 1
             if order.quantity <= order.vehicle.inventory:
-                order.vehicle.inventory -= 1
+                order.vehicle.inventory -= order.quantity
                 order.vehicle.save()
                 order.save()
                 msg = 'Your vehicle has been ordered'

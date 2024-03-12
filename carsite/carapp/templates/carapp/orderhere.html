@@ -3,6 +3,12 @@
 {% block body_block %}
 
 <h3> You can place your order here.</h3>
+    
+{% if msg %}
+<div class="alert alert-info" role="alert">
+    {{ msg }}
+</div>
+{% endif %}    
 
 {% if vehiclelist %}
 <h2> Type of Cars </h2>
